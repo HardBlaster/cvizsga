@@ -1,9 +1,12 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
+#include <numeric>
 #include "polygon.h"
 
 using namespace std;
 
-long factorial (long a) {
+long factorial(long a) {
     if (a > 1) {
         return (a * factorial(a - 1));
     } else {
@@ -12,23 +15,28 @@ long factorial (long a) {
 }
 
 int addition(const int a, const int b) {
-    return a+b;
+    return a + b;
 }
 
 int addition(const int a, const int b, const int c) {
-    return a+b+c;
+    return a + b + c;
 }
 
-string addition(const string& a, const string& b) {
-    return a+b;
+string addition(const string &a, const string &b) {
+    return a + b;
 }
 
-void multiply(const int a, const int b, int& c) {
-    c = a*b;
+void multiply(const int a, const int b, int &c) {
+    c = a * b;
 }
 
-void multiply(const int a, const int b, int* c) {
-    *c = a*b;
+void multiply(const int a, const int b, int *c) {
+    *c = a * b;
+}
+
+void show(int a[], int size) {
+    for (int i = 0; i < size; ++i)
+        cout << a[i] << " ";
 }
 
 int main() {
@@ -74,8 +82,8 @@ int main() {
 //Függvények, paraméter átadás, függvénynév túlterhelés, operátorok.
 
     int add1 = 10, add2 = 15, add3 = 0;
-    string str1 = "Szöveg 1 ";
-    string str2 = "Szöveg 2 ";
+    string str1 = "Text 1 ";
+    string str2 = "Text 2 ";
 
     cout << "addition(add1, add2): " << addition(add1, add2) << "\naddition(add1, add2, add2): "
          << addition(add1, add2, add2) << "\naddition(str1, str2): " << addition(str1, str2) << endl;
@@ -128,6 +136,66 @@ int main() {
 
     rectangle2.onscreen();
     triangle2.onscreen();
+
+//----------------------------------------------------------------------------------------------------------------------
+//Upcasting/Downcasting
+
+    CPolygon *poly;
+    CRectangle rec(2, 3);
+
+    poly = &rec;
+
+    CRectangle *rec2 = (CRectangle *) poly;
+    (*rec2).onscreen();
+    rec2->onscreen();
+
+    poly = rec2;
+    poly->onscreen();
+
+//----------------------------------------------------------------------------------------------------------------------
+//STL
+
+    int arr[] = {1, 5, 8, 9, 6, 7, 3, 4, 2, 0};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    cout << "The array before sorting is : ";
+    show(arr, size);
+
+    sort(arr, arr + 10);
+
+    cout << "\nThe array after sorting is : ";
+    show(arr, size);
+
+    if (binary_search(arr, arr + 10, 2)) {
+        cout << "\nElement '2' found in the array" << endl;
+    } else {
+        cout << "\nElement not found in the array" << endl;
+    }
+
+    vector<int> vect(arr, arr + size);
+    reverse(vect.begin(), vect.end());
+
+    cout << "Maximum element of vector is: " << *max_element(vect.begin(), vect.end()) << endl;
+
+    cout << "Minimum element of vector is: " << *min_element(vect.begin(), vect.end()) << endl;
+
+    cout << "The summation of vector elements is: " << accumulate(vect.begin(), vect.end(), 0) << endl;
+
+    all_of(arr, arr + size, [](int x) { return x > 0; }) ? cout << "All are positive elements" : cout
+            << "All are not positive elements";
+
+    any_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "There exists a negative element" : cout
+            << "All are positive elements";
+
+    none_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "No negative elements" : cout
+            << "There are negative elements";
+
+    vector<int>::iterator ptr;
+
+    cout << "The vector elements are : ";
+    for (ptr = vect.begin(); ptr < vect.end(); ptr++)
+        cout << *ptr << " ";
+    cout << endl;
 
     return 0;
 }
