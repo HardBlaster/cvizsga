@@ -2,7 +2,9 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
+#include <fstream>
 #include "polygon.h"
+#include "exception.h"
 
 using namespace std;
 
@@ -37,6 +39,14 @@ void multiply(const int a, const int b, int *c) {
 void show(int a[], int size) {
     for (int i = 0; i < size; ++i)
         cout << a[i] << " ";
+}
+
+double division(int a, int b) {
+    if( b == 0 ) {
+        throw TestException();
+    }
+
+    return (a/b);
 }
 
 int main() {
@@ -181,14 +191,14 @@ int main() {
 
     cout << "The summation of vector elements is: " << accumulate(vect.begin(), vect.end(), 0) << endl;
 
-    all_of(arr, arr + size, [](int x) { return x > 0; }) ? cout << "All are positive elements" : cout
-            << "All are not positive elements";
+    all_of(arr, arr + size, [](int x) { return x > 0; }) ? cout << "All are positive elements" << endl : cout
+            << "All are not positive elements" << endl;
 
-    any_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "There exists a negative element" : cout
-            << "All are positive elements";
+    any_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "There exists a negative element" << endl : cout
+            << "All are positive elements" << endl;
 
-    none_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "No negative elements" : cout
-            << "There are negative elements";
+    none_of(arr, arr + size, [](int x) { return x < 0; }) ? cout << "No negative elements" << endl : cout
+            << "There are negative elements" << endl;
 
     vector<int>::iterator ptr;
 
@@ -196,6 +206,52 @@ int main() {
     for (ptr = vect.begin(); ptr < vect.end(); ptr++)
         cout << *ptr << " ";
     cout << endl;
+
+    char data[100];
+    ofstream outfile;
+    outfile.open("out.txt");
+
+    cout << "Enter your name: ";
+    cin >> data;
+
+    outfile << data << endl;
+
+    cout << "Enter your age: ";
+    cin >> data;
+
+    outfile << data << endl;
+    outfile.close();
+
+    ifstream infile;
+    infile.open("out.txt");
+    infile >> data;
+
+    cout << data << endl;
+
+    infile >> data;
+    cout << data << endl;
+
+    infile.clear();
+    infile.seekg(0, ios::beg);
+    while(infile >> data) {
+        cout << data << endl;
+    }
+    infile.close();
+
+//----------------------------------------------------------------------------------------------------------------------
+//Kivétel kezelés
+
+    int x = 10, y = 0;
+    double z;
+
+    try {
+
+        z = division(x, y);
+        cout << z << endl;
+
+    } catch (TestException &testException) {
+        cerr << testException.what() << endl;
+    }
 
     return 0;
 }

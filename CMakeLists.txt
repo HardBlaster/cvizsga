@@ -3,4 +3,4 @@ project(vizsga)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(vizsga main.cpp polygon.h)
+add_executable(vizsga main.cpp polygon.h exception.h)
